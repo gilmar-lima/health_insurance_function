@@ -4,10 +4,20 @@ from models import HealthInsurance
 import functions_framework
 import joblib
 
+
+def load_data():
+    global _model 
+    global _column_transformer
+    global _bins_annual_premium_type
+
+    _model = joblib.load(filename = 'parameters/random_forrest.gz')
+    _column_transformer = joblib.load(filename = 'parameters/column_transformer.joblib')
+    _bins_annual_premium_type = joblib.load(filename = 'parameters/bins_annual_premium_type.joblib')
+
+load_data()
+
 @functions_framework.http
 def predict(request):
-
-    load_data()
 
     try:
         content_type = request.headers.get('Content-Type')
@@ -40,11 +50,4 @@ def predict(request):
                         status=400, 
                         mimetype='application/json')
 
-def load_data():
-    global _model 
-    global _column_transformer
-    global _bins_annual_premium_type
 
-    _model = joblib.load(filename = 'parameters/random_forrest.gz')
-    _column_transformer = joblib.load(filename = 'parameters/column_transformer.joblib')
-    _bins_annual_premium_type = joblib.load(filename = 'parameters/bins_annual_premium_type.joblib')
