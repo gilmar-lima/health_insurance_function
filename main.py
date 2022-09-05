@@ -25,10 +25,10 @@ def predict(request):
                                 mimetype='application/json'
                             )
 
-        payload = request.data.decode('utf-8')
-
         health_insurance = HealthInsurance(_model,_column_transformer,
                                             _bins_annual_premium_type)
+
+        payload = request.data.decode('utf-8')
         payload_predicted = health_insurance.predict(payload)
 
         return Response( payload_predicted, 
